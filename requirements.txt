@@ -1,0 +1,5 @@
+# Requirements
+unittest
+customTkinter
+requests
+keyring
