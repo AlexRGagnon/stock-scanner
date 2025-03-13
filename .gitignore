@@ -1,0 +1,9 @@
+# General GitHub gitignore
+__pycache__/
+dist/
+build/
+cache/
+.vs/
+.idea/
+.pycache/
+.pipe-metadata/
