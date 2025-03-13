@@ -1,9 +1,37 @@
 # API Reference Documentation
 
-This will contain specific details on how to interact with the Charles Schwab API.
+This document specifies the endpoints for the Charles Schwab API and how to interact with it. 
+
+
+## Authentication
+- Using OAuth 2.0 (Grant type with refresh tokens)
+- Client ID: [provided]
+- Client Securet: [provided]
+- Callback URL : https://127.0.0.1:8123/
 
 ## Endpoints
 
-- Link to API: https://api.charleschwab.com
-- Methods: POST, GET, PAT() and DELETE
-- Authentication: OAuth 2.0 with refresh tokens.
+## 1. Get Stock Price
+- URL: /quotes/stock/price/{symbol}
+- Method: GET
+- Parameters:
+    - symbol: The stock symbol (APL, TV exc)
+- Response:
+    - returns son JSON- with the current price.
+
+## 2. Get Stock Fundamental Data
+- URL: /quotes/fundamental/{symbol}
+- Method: GET
+- Parameters:
+    - symbol: The stock symbol.
+- Response:
+    - returns JSON with PE ratio, PS ratio, revenue, debt, and other data.
+
+## 3. Get Options Data
+- URL: /options/{symbol}
+- Method: GET
+- Parameters:
+    - symbol: The stock symbol.
+- Response:
+    - Returns the list of available options.
+    - Verifies if a given stock has weekly options.
