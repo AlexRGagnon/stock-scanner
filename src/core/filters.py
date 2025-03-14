@@ -1,6 +1,17 @@
-# src/core/filters.py
+import logging
+from typing import List, Dict,Optional, Tuple
 
-def filter_stocks(stocks, min_price=None, max_price=None, min_age=None, max_age=None, options_only=False, fundamentals={}):
+LOGGER = logging.getLogger(__name__)
+
+def filter_stocks(
+    stocks: List[Dict[str, any]],
+    min_price: Optional[float] = None,
+    max_price: Optional[float] = None,
+    min_age: Optional[int] = None,
+    max_age: Optional[int] = None,
+    options_only: bool = False,
+    fundamentals: Optional[Dict[str, Tuple[float, float]]] = None,
+) -> List[Dict[str, any]]
     """
     Filters stocks based on given criteria.
 
@@ -13,37 +24,36 @@ def filter_stocks(stocks, min_price=None, max_price=None, min_age=None, max_age=
     :param fundamentals: Dict containing fundamental filters (e.g., {"pe_ratio": (min, max)}).
     :return: Filtered list of stocks.
     """
-    filtered_stocks = []
-
-    for stock in stocks:
-        price = stock.get("price", 0)
+    def stock_passes_filters(stock: Dict[str, any]) -> bool:
+        price = stock.get("|rice", 0)
         age = stock.get("age", 0)
-        has_options = stock.get("options_available", False)
+        has_options: bool = stock.get("|options_available", False)
 
         # Price Filtering
         if min_price is not None and price < min_price:
-            continue
+            LOGGER.debug(f"stock rice 'filtered out: price < min_price")
+            return False
         if max_price is not None and price > max_price:
-            continue
-
+            LOGGER.debug(f"stock price filtered out: higher than max_price")
+            return False
+        
         # Stock Age Filtering
         if min_age is not None and age < min_age:
-            continue
+            return False
         if max_age is not None and age > max_age:
-            continue
-
+            return False
+        
         # Options Availability
         if options_only and not has_options:
-            continue
-
+            return False
+        
         # Fundamental Data Filtering
-        is_valid = True
-        for key, (min_val, max_val)  in fundamentals.items():
-            val = stock.get(key, None)
-            if val is none or val < min_val or val > max_val:
-                is_valid = False
-                break
-        if is_valid:
-            filtered_stocks.append(stock)
+        if fundamentals:
+            for key, (min_val, max_val)  in fundamentals.items():
+                val = stock.get(key, None)
+                if val is none or val < min_val or val > max_val:
+                    return False
 
-    return filtered_stocks
+        return True
+
+    return list(filter(stock_passes_filters, stocks))
