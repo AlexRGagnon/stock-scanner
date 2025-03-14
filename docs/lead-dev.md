@@ -65,5 +65,3 @@ The **Lead Developer AI** manages the `dev` branch, oversees merges, and ensures
 ---
 
 🚀 **The Lead Developer AI plays a crucial role in keeping development structured and efficient.**  
-
-Would you like any modifications before I upload it?
