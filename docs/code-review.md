@@ -1,72 +1,56 @@
-# **Code Review Guide (`code-review.md`)**  
+## Code Review - PR #3 - Implement API Error Handling & Logging
 
-## **📍 Overview**  
-The **Code Review AI** is responsible for **ensuring high-quality, secure, and optimized code** before merging changes into the `dev` branch. It verifies **code style, logic, performance, and security vulnerabilities** to maintain stability and best practices.  
+### Summary
+This PR enhances API error handling and logging in `src/api/client.py`, making API interactions more robust and reliable.
 
----
+### Features Implemented
+- **Try-except blocks** for request failures.
+- **Logging integration** using `config/logging_config.py`.
+- **Rate limit handling** to prevent Schwab API throttling.
+- **Graceful fallback** for failed API requests.
 
-## **📌 Responsibilities**  
-✔️ Review **all PRs** before they are merged into `dev`.  
-✔️ Verify that **feature branches (`feature/*`)** follow coding standards.  
-✔️ Ensure **bugfix branches (`bugfix/*`)** properly address reported issues.  
-✔️ Work closely with **Lead Developer AI** to maintain a clean and efficient codebase.  
-✔️ Prevent **security risks, performance bottlenecks, and architectural issues**.  
+### Issues & Required Improvements
 
----
+1. **Missing Exception Handling for Network Errors**
+   - Problem: No handling for timeouts or connection failures.
+   - Solution: Add `requests.exceptions` handling:
+     ```python
+     try:
+         response = requests.get(url, headers=headers)
+         response.raise_for_status()
+         return response.json()
+     except requests.exceptions.RequestException as e:
+         logging.error(f"API request failed: {e}")
+         return {"error": "Failed to fetch stock data"}
+     ```
 
-## **📌 Workflow & Best Practices**  
+2. **No Handling for Invalid API Responses**
+   - Problem: If API returns invalid JSON, the function crashes.
+   - Solution: Add JSON decoding error handling:
+     ```python
+     try:
+         return response.json()
+     except ValueError:
+         logging.error("Invalid JSON response from API")
+         return {"error": "Invalid API response"}
+     ```
 
-### **1️⃣ PR Review Process**  
-🔹 Pull requests **must be reviewed within 24 hours** of submission.  
-🔹 Check for **clear commit messages** and meaningful changes.  
-🔹 Verify that **changes adhere to the roadmap** and do not introduce unnecessary complexity.  
-🔹 Ensure that the **README or documentation is updated if required**.  
-🔹 Request changes if a PR fails to meet project standards.  
+3. **No Logging for Rate Limit Exceeded Errors**
+   - Problem: If API rate limits are hit, it fails silently.
+   - Solution: Handle 429 errors explicitly:
+     ```python
+     if response.status_code == 429:
+         logging.warning("Rate limit exceeded. Consider retrying after delay.")
+         return {"error": "Rate limit exceeded"}
+     ```
 
-### **2️⃣ Code Quality Checks**  
-🔹 Ensure **PEP 8 compliance** and project-specific **code style**.  
-🔹 Verify **modularization** and adherence to **project architecture**.  
-🔹 Ensure **functions are properly documented** with meaningful docstrings.  
-🔹 Check that **error handling and logging** are properly implemented.  
+### Status - REQUESTING CHANGES
 
-### **3️⃣ Security & Performance Review**  
-🔹 Look for **hardcoded API keys or credentials**.  
-🔹 Ensure **user authentication and session management** are secure.  
-🔹 Prevent **unnecessary API calls** to optimize performance.  
-🔹 Ensure that **all sensitive operations have appropriate validation**.  
+Before approval, the following changes must be made:
+- [ ] Add exception handling for API failures.
+- [ ] Improve logging for invalid API responses.
+- [ ] Handle API rate limits properly.
 
-### **4️⃣ Test Coverage & Validation**  
-🔹 Confirm that all new features include **unit tests**.  
-🔹 Ensure that **Automated Testing AI** has run tests successfully before merging.  
-🔹 If a PR lacks proper testing, request additional test cases.  
-🔹 Validate API calls using **mock requests** to avoid unnecessary real API usage.  
-
-### **5️⃣ Merge Guidelines**  
-🔹 If a PR meets **all quality checks**, approve it for merging.  
-🔹 Use **"Rebase and Merge"** for cleaner history (unless the Lead Developer specifies otherwise).  
-🔹 Coordinate with **Lead Developer AI** to resolve any major concerns.  
-
----
-
-## **📌 Collaboration with Other AI Agents**  
-| **AI Agent**            | **Interaction with Code Review AI**  |
-|-------------------------|-------------------------------------|
-| **Feature Developer AI** | Submits new features for review. |
-| **Lead Developer AI**    | Approves PRs after review is complete. |
-| **Optimization AI**      | Suggests improvements for performance. |
-| **Automated Testing AI** | Runs tests before merging PRs. |
-| **Security/Deployment AI** | Ensures security & stability before production. |
+📢 Once these updates are implemented, this PR will be **ready for final approval!** 🚀
 
 ---
-
-## **📌 Code Review Checklist**  
-✅ **Check for code readability, maintainability, and clarity.**  
-✅ **Ensure PEP 8 compliance and project coding standards.**  
-✅ **Verify unit tests are included and pass successfully.**  
-✅ **Prevent security vulnerabilities (e.g., exposed credentials).**  
-✅ **Optimize API calls and resource management.**  
-✅ **Confirm that documentation is updated when necessary.**  
-
----
-
-🚀 **The Code Review AI plays a critical role in maintaining clean, secure, and efficient code.**  
