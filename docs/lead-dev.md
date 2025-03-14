@@ -1,67 +1,86 @@
-# **Lead Developer Guide (`lead-dev.md`)**  
+# Lead Development Strategy
 
-## **📍 Overview**  
-The **Lead Developer AI** manages the `dev` branch, oversees merges, and ensures high-quality code is implemented. It collaborates with other AI agents, reviews PRs, and enforces coding standards.  
+This document outlines the module interactions, class structures, and the overall development strategy for the Stock Scanner project.
 
----
-
-## **📌 Responsibilities**  
-✔️ Maintain the `dev` branch as the primary development branch.  
-✔️ Review and merge **feature branches** after passing code review and testing.  
-✔️ Ensure adherence to **code standards, architecture, and security guidelines**.  
-✔️ Collaborate with **Feature Developer AI, Code Review AI, and Optimization AI**.  
-✔️ Address merge conflicts and oversee the **staging environment** before deployment.  
+Modules are broken down into their functional sections to ensure modularity, scalability, and team collaboration.
 
 ---
 
-## **📌 Workflow & Best Practices**  
-### **1️⃣ Branch Management**  
-🔹 The `dev` branch must always be stable and reflect the latest approved code.  
-🔹 All new features are developed in `feature/*` branches and merged into `dev`.  
-🔹 Bug fixes should be developed in `bugfix/*` branches and reviewed before merging.  
+### 📍 Overview
 
-### **2️⃣ Reviewing & Merging PRs**  
-🔹 **Code Review AI** must approve all PRs before merging into `dev`.  
-🔹 Ensure all commits are atomic and meaningful.  
-🔹 Merge method: Prefer **rebase & merge** to maintain a clean history.  
-
-### **3️⃣ Ensuring Code Quality**  
-🔹 Enforce **PEP 8** and project-specific coding standards.  
-🔹 Ensure **unit tests** exist for all major functions.  
-🔹 Validate API calls and error handling mechanisms.  
-
-### **4️⃣ Resolving Merge Conflicts**  
-🔹 If a merge conflict occurs, prioritize the latest stable implementation.  
-🔹 Coordinate with the Feature Developer AI if manual fixes are required.  
-🔹 Ensure **all tests pass** before merging into `dev`.  
+The * Lead Developer AI * manages the *dev* branch, oversees merges, and ensures high-quality code is implemented. It collaborates with other AI agents, reviews PRs, and enforces coding standards.
 
 ---
 
-## **📌 Testing & Validation Process**  
-✔️ **Automated Testing AI** must run tests before merging.  
-✔️ All changes must pass **unit tests, integration tests, and API validation**.  
-✔️ **Performance benchmarks** should be verified by Optimization AI.  
+### 📌 Responsibilities
+
+** Maintain the `dev` branch as the primary development branch.
+** Review and merge `feature/*b branches after code review.
+** Ensure adherence to coding standards and security guidelines.
+
+** Collaborate with Feature Developer AI, Code Review AI, and Optimization AI.
+  
+---
+
+### 📎 Branch Management
+
+* Feature branches are worked on from `feature/* * and merged into `dev`.
+* Bug fixes are developed in `bugfix/*` and reviewed before merging.
 
 ---
 
-## **📌 Collaboration with Other AI Agents**  
-| **AI Agent**            | **Interaction with Lead Developer AI**  |
-|-------------------------|----------------------------------------|
-| **Feature Developer AI** | Provides new features via `feature/*` branches. |
-| **Code Review AI**      | Ensures code quality before merging into `dev`. |
-| **Optimization AI**     | Suggests performance improvements. |
-| **Automated Testing AI**| Runs and verifies test results before merging. |
-| **Deployment AI**       | Ensures `dev` is stable before deploying to `deploy/main`. |
+### 📎 Module Breakdown
 
----
+## 1
+ ** API Module (api/) ** Handles authentication, data requests, and stock data fetching.
 
-## **📌 Lead Developer Checklist**  
-✅ **Ensure `dev` branch remains stable.**  
-✅ **Review all PRs before merging.**  
-✅ **Work closely with Code Review AI & Feature Developer AI.**  
-✅ **Run all tests before approving merges.**  
-✅ **Maintain high code quality and architecture standards.**  
 
----
+```{python}
+class AuthManager:
+  """handles authentication and token management."""
+  def get_token(self) -> str:
+    """Returns a valid access token, refreshing if necessary."""
+    pass
 
-🚀 **The Lead Developer AI plays a crucial role in keeping development structured and efficient.**  
+  def refresh_token(self) -> None:
+    """Refreshes the auth token when expired."""
+    pass
+class APIClient:
+  def fetch_stock_data(self, symbol: str) -> dict:
+    """Retrieves stock data for the given symbol."""
+    pass
+```
+
+## 2
+** Core Module (core/) ** Stock scanning and filtering system.
+
+```{python}
+class StockFilter:
+  """Filters stock data based on user-set criteria."""
+  def apply_filters(self, stock_list: list) -> list:
+    pass
+```
+
+## 3
+** GUI Module (gui/) ** Handles user interactions and displays stock data.
+
+```{python}
+class StockScannerApp:
+  def __init__(self):
+    """Main GUI application framework."""
+    pass
+```
+
+### 📍 Development Progress
+
+| Task | Status |
+}----|-----|
+* File tree analysis ) ✈ ✨ Formalized structure of the repository.  |
+##  ---
+#### 📎 Next Steps
+
+1. Setup review process for the GUI component. 2. Ensure that the API integration is fully complete. 
+3. Optimize stock data filtering and data top fluid processing. 4. Prepare final deployment version.
+
+### 📎 Conclusion
+The Lead Developer AI plays a crucial role in keeping development structured and efficient.  
